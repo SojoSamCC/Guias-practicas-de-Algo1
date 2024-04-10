@@ -167,18 +167,27 @@ comparar x y | ((sumaUltimosDosDigitos x) < (sumaUltimosDosDigitos y)) = 1
 
 -- Ejercicio 2)
 -- a)
+-- problema absoluto{x:Z}:Z{
+-- asegura { res= |x|}
+--}
 
 absoluto :: Int -> Int
 absoluto x | x<0 = (-x) 
            | otherwise = x
 
 -- b)
+-- problema maximoabsoluto{x,y:Z}:Z{
+-- asegura {(|x|>|y| <-> res=|x|) V (|x|<|y| <-> res=|y|)} 
+--}
 
 maximoabsoluto :: Int -> Int -> Int
 maximoabsoluto x y | (absoluto x) > (absoluto y) = absoluto x
                    | otherwise = (absoluto y)
 
 -- d)
+-- problema algunoEs0{x,y:R}:Bool {
+-- asegura {res=True <-> ((x=0) V (y=0))}
+-- asegura {res=False <-> ((x/=0) ∧ (y=0))}
 
 -- CON PATTERN MATCHING
 algunoEs0 :: Float -> Float -> Bool
@@ -192,6 +201,11 @@ algunoEs0_2 x y | x ==0 || y == 0 = True
                 | otherwise = False
 
 -- e)
+-- problema ambosSon0_1{x,y:R}:Bool {
+-- asegura {res=True <-> ((x=0) ∧ (y=0))}
+-- asegura {res=False <-> ((x/=0) V (y/=0))}
+--}
+
 -- CON PATTERN MATCHING
 ambosSon0_1 :: Float -> Float -> Bool
 ambosSon0_1 0 0 = True
@@ -203,11 +217,26 @@ ambosSon0_2 x y | x==0 && y==0 = True
                 | otherwise = False
 
 -- f)
+-- problema mismoIntervalo{x,y:R}:Bool {
+-- asegura {res= True <-> ((x,y pertenecen a (−∞, 3]) V (x,y pertenecen a (3, 7]) V (x,y pertenecen a (7, ∞))) }
+-- asegura {res= False <-> ((x,y no pertenecen a (−∞, 3]) ∧ (x,y no pertenecen a (3, 7]) ∧ (x,y no pertenecen a (7, ∞)))}
+--}
 mismoIntervalo :: Float -> Float -> Bool
-mismoIntervalo x y | (x=<3 && y=<3) = True
-                   | (x<3 && y<3 && x=<7 y=<7) = True -- hay que arreglar lo de <= con: numero < 3 || numero = 3
-                   | (x<7 && y<7) = True
+mismoIntervalo x y | (x<=3 && y<=3) = True
+                   | (x>3 && y>3 && x<=7 && y<=7) = True -- hay que arreglar lo de <= con: numero < 3 || numero = 3
+                   | (x>7 && y>7) = True
                    | otherwise = False
+
+
+-- h)
+-- problema esMultiploDe(x,y:Z):Bool {
+-- asegura {res= True <-> x = y*K}
+-- asegura {res= False <-> x /= y*k}
+--}
+
+esMultiploDe :: Int -> Int -> Bool
+esMultiploDe x y | mod x y == 0 = True
+                 | otherwise = False
 
 
 -- Ejercicio 3) 
@@ -217,6 +246,14 @@ hallar_valor_de_k x y = div (-(x*x)) (x*y)
 estanRelacionados :: Int -> Int -> Bool
 estanRelacionados x y | ((x*x+x*y*(hallar_valor_de_k x y) == 0) && ((hallar_valor_de_k x y) /=0)) = True
                       | otherwise = False
+
+
+-- Ejercicio 4)
+-- a) 
+prodInt :: (Float,Float) -> (Float, Float) -> Float
+prodInt (x,y) (z,t) = (fst(x,y)*fst(z,t))+(snd(x,y)*snd(z,t))
+
+
 
 
 
