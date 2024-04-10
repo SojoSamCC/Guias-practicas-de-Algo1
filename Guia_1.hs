@@ -1,18 +1,25 @@
+--PRIMER LABORATORIO DE HASKELL
+
 -- Ejercicio 1)
+-- a)
+
 f :: Integer -> Integer
 f n | n==1 =8
     | n==4 =131
     | n==16 =16
 
+-- b)
 -- problema g(n:Z):Z {
 -- requiere: {n==8 V n ==16 V n==131}
 -- asegura:{(n=8 -> result=8)∧(n=16 -> result=4)∧(n=131->result=1)}
 --}
+
 g :: Integer -> Integer
 g n | n==8 =16
     | n==16 =4
     | n==131 =1
 
+-- c)
 h :: Integer -> Integer
 h n = f (g n)
 
@@ -97,6 +104,9 @@ todoMenor (x,y) (z,t) | fst (x,y)< fst (z,t) && snd(x,y)<snd(z,t) = True
 -- asegura {res=3 <-> resto de x entre dos = 0}
 --}
 
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+-- SEGUNDO LABORATORIO DE HASKELL
+
 posPrimerPar :: (Int,Int,Int) -> Int
 posPrimerPar (x,y,z) | mod x 2 ==0 = 1
                      | mod y 2 ==0 = 2
@@ -149,6 +159,70 @@ comparar x y | ((sumaUltimosDosDigitos x) < (sumaUltimosDosDigitos y)) = 1
 -- Ejercicio 9) 
 -- d) Esta función toma dos números reales y calcula el promedio entre ellos.
 -- e) Esta función toma una tupla de números reales y devuelve el promedio entre la primera coordenada de la tupla y la segunda coordeanda de la tupla.
+
+
+
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
+-- RESTO DE LA GUÍA DE EJERCICIOS 
+
+-- Ejercicio 2)
+-- a)
+
+absoluto :: Int -> Int
+absoluto x | x<0 = (-x) 
+           | otherwise = x
+
+-- b)
+
+maximoabsoluto :: Int -> Int -> Int
+maximoabsoluto x y | (absoluto x) > (absoluto y) = absoluto x
+                   | otherwise = (absoluto y)
+
+-- d)
+
+-- CON PATTERN MATCHING
+algunoEs0 :: Float -> Float -> Bool
+algunoEs0 0 y = True
+algunoEs0 x 0 = True
+algunoEs0 x y = False
+
+-- SIN PATTERN MATCHING
+algunoEs0_2 :: Float -> Float -> Bool
+algunoEs0_2 x y | x ==0 || y == 0 = True
+                | otherwise = False
+
+-- e)
+-- CON PATTERN MATCHING
+ambosSon0_1 :: Float -> Float -> Bool
+ambosSon0_1 0 0 = True
+ambosSon0_1 x y = False
+
+-- SIN PATTERN MATCHING
+ambosSon0_2 :: Float -> Float -> Bool
+ambosSon0_2 x y | x==0 && y==0 = True
+                | otherwise = False
+
+-- f)
+mismoIntervalo :: Float -> Float -> Bool
+mismoIntervalo x y | (x=<3 && y=<3) = True
+                   | (x<3 && y<3 && x=<7 y=<7) = True -- hay que arreglar lo de <= con: numero < 3 || numero = 3
+                   | (x<7 && y<7) = True
+                   | otherwise = False
+
+
+-- Ejercicio 3) 
+hallar_valor_de_k :: Int -> Int -> Int
+hallar_valor_de_k x y = div (-(x*x)) (x*y)
+ 
+estanRelacionados :: Int -> Int -> Bool
+estanRelacionados x y | ((x*x+x*y*(hallar_valor_de_k x y) == 0) && ((hallar_valor_de_k x y) /=0)) = True
+                      | otherwise = False
+
+
+
+
+
+
 
 
 
