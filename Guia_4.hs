@@ -31,3 +31,23 @@ parteEntera n | n >=0 &&   n <1 = 0
               | n>(-1) && n <0 = 0
               | n>=1 = 1 + parteEntera (n-1)
               | otherwise = (-1)+  parteEntera (n+1)
+
+{--
+Ejercicio 3) 
+Especificar e implementar la funci´on esDivisible :: Integer ->Integer ->Bool que dados dos n´umeros
+naturales determinar si el primero es divisible por el segundo. No est´a permitido utilizar las funciones mod ni div.
+--}
+tieneDecimal :: Float -> Bool
+tieneDecimal n | n>1 && n>0 = tieneDecimal (n-1)
+               | n<1 && n>0 = True
+               | n==0 || n==1 = False
+{--
+esPrimo :: Integer -> Bool 
+esPrimo x | x==1 || x== 2 || x==3 || x  
+--}
+
+esDivisible :: Integer -> Integer -> Bool
+esDivisible x y | y>x = False
+                | x==y = True
+                | otherwise = esDivisible (x-y) y
+
