@@ -67,9 +67,18 @@ digitoUnidades :: Integer -> Integer
 digitoUnidades n = mod n 10
 
 todosDigitosIguales :: Integer -> Bool
-todosDigitosIguales n | n >=0 && n<10 = True 
-                      | otherwise = ((digitoUnidades n == sacarUnidades n)) -- Tengo que resolver esto, muy muy rápido
+todosDigitosIguales n | n<10 = True 
+                      | otherwise = (digitoUnidades n == digitoUnidades(sacarUnidades n)) {-- Esto es para que mientras ambos valores sean iguales, siga tirando True)--} &&  todosDigitosIguales(sacarUnidades n)
 
-{--
+cantDigitos :: Integer -> Integer 
+cantDigitos n | n>=0 && n<1 = 0
+              | otherwise = 1 + cantDigitos (sacarUnidades n)
+
+elevar :: Integer -> Integer -> Integer
+elevar n x = 10^x 
+
 iesimoDigito :: Integer ->Integer ->Integer
-iesimoDigito n | --}
+iesimoDigito n i | i==0 = 0
+                 | i==cantDigitos n = mod n 10
+                 | otherwise = iesimoDigito (div n (10^(cantDigitos n - i))) i
+    
