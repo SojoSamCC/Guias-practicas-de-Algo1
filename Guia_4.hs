@@ -115,7 +115,14 @@ f4 n q = f3 n q - f2 (n-1) q
 
 -- Ejericio 11
 -- a)
+factorial1 :: Integer -> Float
+factorial1 n | n==0 =1
+            | n>0 =  fromIntegral (n*factorial (n-1))
+
 eAprox :: Integer -> Float
 eAprox 0 = 1
 eAprox 1 = 2 
-eAprox n = eAprox(n-1) --Tengo que terminar este
+eAprox n = eAprox(n-1) + (1/factorial1 n) --Preguntar por qué da error con div 1 factorial n
+
+e :: Float
+e = eAprox 10
