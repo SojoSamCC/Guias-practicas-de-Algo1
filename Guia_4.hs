@@ -1,6 +1,7 @@
-factorial :: Int -> Int
+import Distribution.Compat.Lens (_1)
+factorial :: Integer -> Integer
 factorial n | n==0 =1
-            | (abs n)>0 = (abs n)*factorial (n-1)
+            | n>0 =  n*factorial (n-1)
 
 {--
 Un comentario de varias  líneas, osi osi
@@ -74,11 +75,47 @@ cantDigitos :: Integer -> Integer
 cantDigitos n | n>=0 && n<1 = 0
               | otherwise = 1 + cantDigitos (sacarUnidades n)
 
+{--
 elevar :: Integer -> Integer -> Integer
 elevar n x = 10^x 
+--}
 
 iesimoDigito :: Integer ->Integer ->Integer
 iesimoDigito n i | i==0 = 0
                  | i==cantDigitos n = mod n 10
                  | otherwise = iesimoDigito (div n (10^(cantDigitos n - i))) i
     
+esCapicua :: Integer -> Bool 
+esCapicua n | n<10 = True
+            | iesimoDigito n 1 /= iesimoDigito n (cantDigitos n) = False
+            | otherwise = (iesimoDigito n 1 == iesimoDigito n (cantDigitos n)) && esCapicua(iesimoDigito (sacarUnidades n) (cantDigitos (sacarUnidades n)))
+
+--Ejercicio 10 
+-- a)
+f1 :: Integer -> Integer
+f1 0 = 1
+f1 n = f1 (n-1) + 2^n
+
+-- b)
+f2 :: Integer -> Float -> Float
+f2 0 q = 1
+f2 1 q = q
+f2 n q = f2 (n-1) q + q^n
+
+-- c)
+f3 :: Integer -> Float -> Float
+f3 1 q = f2 2 q 
+f3 n q = f2 (2*n) q
+
+--d)  
+f4 :: Integer -> Float -> Float
+f4 0 q = 1
+f4 1 q = f3 1 q  
+f4 n q = f3 n q - f2 (n-1) q
+
+-- Ejericio 11
+-- a)
+eAprox :: Integer -> Float
+eAprox 0 = 1
+eAprox 1 = 2 
+eAprox n = eAprox(n-1) --Tengo que terminar este
