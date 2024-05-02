@@ -115,6 +115,129 @@ sumarN e (x:xs) = [e+x]++sumarN e xs
 
 --5)
 sumarElPrimero :: [Integer] -> [Integer]
+sumarElPrimero [x] = [x+x]
+sumarElPrimero (x:xs) = sumarN x (x:xs)
+
+--6)
+sumarElUltimo :: [Integer] -> [Integer]
+sumarElUltimo [x] = [x+x]
+sumarElUltimo (x:xs) = sumarN (ultimo (x:xs)) (x:xs)
+
+--7)
+pares :: [Integer] -> [Integer]
+pares [x] | mod x 2 == 0 = [x]
+          | otherwise = []
+pares (x:xs) | mod x 2 == 0 = x:pares xs
+             | otherwise = pares xs
+
+--8)
+multiplosDeN :: Integer -> [Integer] -> [Integer]
+multiplosDeN e [x] | mod x e ==0 = [x]
+                   | otherwise = []
+multiplosDeN e (x:xs) | mod x e == 0 = x:multiplosDeN e xs
+                      | otherwise = multiplosDeN e xs
+                         
+--9)
+menor :: (Ord s)=>[s] ->s
+menor [x] = x
+menor (x:xs) = sacarMayor x (x:xs)
+
+ordenar :: [Int]->[Int]
+ordenar [x]=[x]
+ordenar (x:xs) = menor (x:xs):ordenar (quitar (menor (x:xs)) (x:xs))
+
+-- Lo hago otra vez sin ver la función que hice en clase
+
+menor2 :: (Ord t)=> [t] -> t
+menor2 [x] = x
+menor2 (x:xs) | x<menor2 xs = x
+              | otherwise = menor2 xs
+
+ordenar2 :: [Integer] -> [Integer]
+ordenar2 [x] = [x]
+ordenar2 (x:xs) = menor2 (x:xs): ordenar2 (quitar (menor2 (x:xs)) (x:xs)) -- También se puede reemplazar quitar por quitarTodos
+-- Acabo de terminar el ejercicio cumpliendo honestamente mi promesa de no ver cómo resolví este mismo ejercicio en clase
+-- y estoy impresionado con el resultado, casi literalmente pensé lo mismo que en aquel momento y las respuestas son casi 
+-- exactas.
+
+-- Ejercicio 4)
+-- a)
+sacarBlancosRepetidos :: [Char] -> [Char] -- NOTA: para referirse a los Char hay que usar ' ' y no " "
+sacarBlancosRepetidos [x,y] | x== ' ' && y== ' ' = [x]
+                            | otherwise = [x,y]
+sacarBlancosRepetidos (x:xs) | x == ' ' && head xs == ' ' = x:tail xs
+                             | otherwise = x:(head xs):sacarBlancosRepetidos (tail xs)
+-- ['s','a','l','i','r', ' ' , ' ', 'd', 'e', ' ', 'a', 'q', ' ', ' ', 'u', 'i']
+
+-- b)
+contarPalabras :: [Char] -> Integer
+contarPalabras [x,y] | x/= ' ' && y /= ' ' = 1
+                     | otherwise = 0
+contarPalabras (x:xs) | x/= ' ' && head xs /= ' ' = 1+contarPalabras (tail xs)
+                      | otherwise = contarPalabras (tail xs)
+
+-- c)
+palabra :: [Char] -> [Char] --Esto reconoce la primera palabra en la lista
+palabra [] = []
+palabra [' '] = []
+palabra (x:xs) | x/=' ' = x:palabra xs
+               | otherwise = []
+
+quitarPalabra :: [Char] -> [Char] -> [Char] --Esto quita la palabra que quieras de cualquier lista de Char
+quitarPalabra _ [] = []
+quitarPalabra [] (y:ys) = y:ys
+quitarPalabra [x] [a] | x==a = []
+                      | otherwise = [a]
+quitarPalabra _ (' ':ys) = ys
+quitarPalabra (x:xs) (y:ys) | x ==y = quitarPalabra xs ys
+                            | otherwise = y:quitarPalabra (x:xs) ys
+
+palabras :: [Char] -> [[Char]] --Esto me devuelve una lista donde los elementos son las palabras de la lista (sin los espacios)
+palabras [] = []
+palabras [x]  | x/= ' '= [[x]]
+              | otherwise = [[]]
+palabras (x:y:xs) | x /= ' ' && y/= ' ' = palabra (x:y:xs):palabras (quitarPalabra (x:xs) (x:xs))
+                  | otherwise = palabras (y:xs)
+
+-- [' ','s','a','l','i','r', ' ' , ' ', 'd', 'e', ' ', 'a', 'q', ' ', ' ', 'u', 'i',' ']
+-- d)
+primero :: [t]->t
+primero [x] = x
+primero (x:xs) = x
+
+segundo :: [t] -> t
+segundo [x] = x
+segundo (x:xs) = head xs
+
+palabraMasLarga :: [Char] -> [Char]
+palabraMasLarga [] = []
+palabraMasLarga [x] = [x]
+palabraMasLarga (x:xs) | longitud (primero (palabras (x:xs))) >= longitud (segundo (palabras (x:xs))) = primero (palabras (x:xs))
+                       | otherwise = palabraMasLarga xs
+
+-- [[' ','s','a','l','i','r', ' ' , ' ', 'd', 'e', ' ', 'a', 'q', ' ', ' ', 'u', 'i',' ']]
+--e) 
+aplanar :: [[Char]] -> [Char]
+aplanar [[]] = []
+aplanar [[x]] = [x]
+aplanar (x:xs) | xs /= [] = x++aplanar xs
+               | otherwise = x
+-- [[' ','s','a','l','i','r'],['d','e'],['a','q','u','i']]
+
+--f)
+sacarBlancosRepetidos2 :: [[Char]] -> [[Char]] -- NOTA: para referirse a los Char hay que usar ' ' y no " "
+sacarBlancosRepetidos2 [x,y] | x== [' '] && y== [' '] = [x]
+                            | otherwise = [x,y]
+sacarBlancosRepetidos2 (x:xs) | x == [' '] && head xs == [' '] = x:tail xs
+                             | otherwise = x:(head xs):sacarBlancosRepetidos2 (tail xs)
+
+aplanarConBlancos :: [[Char]] -> [Char]
+aplanarConBlancos [[]] = []
+aplanarConBlancos [[x]] = [x]
+aplanarConBlancos [[x],[y]] = [x]++[' ']++[y]
+aplanarConBlancos (x:xs) | xs /= [] = x++[' ']++aplanar xs
+                         | otherwise = ' ':x
+
 sacarMenor :: (Ord t)=>t -> [t] ->t
 sacarMenor e (x:xs) | e>=x && null xs = e
                     | e<=x && null xs = x
@@ -129,17 +252,11 @@ sacarMayor e (x:xs) | e>=x && xs==[] = x
                     | e<=x && xs/=[] = sacarMayor e xs
                     | otherwise = sacarMayor e (quitar e xs)
 
-menor :: (Ord s)=>[s] ->s
-menor [x] = x
-menor (x:xs) = sacarMayor x (x:xs)
-
 -- Ejercicio 3.9)
 
 cambiar_menor_a_mayor :: (Ord t)=>t -> t -> [t]
 cambiar_menor_a_mayor e x | e>=x = [x,e]
                           | otherwise = [e,x]
 
-ordenar :: [Int]->[Int]
-ordenar [x]=[x]
-ordenar (x:xs) = menor (x:xs):ordenar (quitar (menor (x:xs)) (x:xs))
+
 
