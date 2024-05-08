@@ -33,16 +33,17 @@ stockDeProducto ((productoS,stock):ps) producto | not (pertenece producto ((prod
 -- NOTA:
 -- DE LA ESPECIFICACIÓN ENTIENDO QUE: CADA PRECIO SE MULTIPLICA POR SU STOCK Y SE SUMA ESE RESULTADO CON EL RESULTADO DE HABER HECHO ESA OPERACIÓN PARA EL PRODUCTO SIGUIENTE, Y ASÍ HASTA TERMINAR LA LISTA DE PRODUCTOS EN STOCK.
 
-dineroEnStock :: [([Char],Int)] -> [([Char],Float)] -> Float -- Esta función te dice todo el dinero que tienes en stock, o sea, la sumatoria entre todos los resultados de haber hecho: el producto entre, el valor de cada producto por su precio 
-dineroEnStock [(producto,stock)] [(productoP,precio)] = precio*fromIntegral(stock)
-dineroEnStock (((producto,stock):pss)) (((productoP,precio):pps)) = precio*fromIntegral(stock)+dineroEnStock pss pps
----- Ejercicio 4 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 buscarPrecio :: [Char] -> [([Char],Float)] -> Float -- Esta función busca el precio de un producto en una lista de la forma producto X precio.
 buscarPrecio producto [(x,precio)] | producto == x = precio
                                    | otherwise = 0
 buscarPrecio producto ((productoP,precio):pps) | producto==productoP = precio
                                                | otherwise = buscarPrecio producto pps
+
+dineroEnStock :: [([Char],Int)] -> [([Char],Float)] -> Float -- Esta función te dice todo el dinero que tienes en stock, o sea, la sumatoria entre todos los resultados de haber hecho: el producto entre, el valor de cada producto por su precio 
+dineroEnStock [(producto,stock)] listaPrecios = (buscarPrecio producto listaPrecios)*fromIntegral(stock)
+dineroEnStock (((producto,stock):pss)) listaPrecios = (buscarPrecio producto listaPrecios)*fromIntegral(stock)+dineroEnStock pss listaPrecios
+
+---- Ejercicio 4 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 aplicarOferta :: [([Char],Int)] -> [([Char],Float)] -> [([Char],Float)] -- Esta función aplica una oferta del 80% sobre el precio de todo producto en la lista de productos que le des (con la forma producto X stock, y con la forma producto X precio) si -y solo si- tienes al menos 11 unidades del producto en stock.
 aplicarOferta [(producto,stock)] listaPrecios | stock>10 = [(producto,(buscarPrecio producto listaPrecios)*0.80)]
