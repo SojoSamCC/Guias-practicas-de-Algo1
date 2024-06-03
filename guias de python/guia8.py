@@ -1,4 +1,5 @@
 from queue import LifoQueue as Pila
+from queue import Queue as Cola
 import random
 # archivo=open("C:/Users/ser/Desktop/Varios/Code/mi-repositorio-de-git/guias-practicas-de-algo1/Tareas/guias de python/pruea.txt","r")
 # contenido= archivo.read()
@@ -267,4 +268,130 @@ def evaluar_expresion(s:str):
             contador+=1
     resultado_final=resultado.get()
     return resultado_final
-print(evaluar_expresion("3 4 + 5 * 2 - 2 +"))
+##print(evaluar_expresion("3 4 + 5 * 2 - 2 +"))
+
+def generar_nros_al_azar_colas(cantidad:int,desde:int,hasta:int)->Cola[int]:
+    c=Cola()
+    for i in range(cantidad):
+        c.put(random.randint(desde,hasta))
+    return c
+
+def cantidad_elementos(c:Cola)->int:
+    lista=[]
+    while c.empty()==False:
+        lista.append(c.get())
+    for i in range(len(lista)):
+        c.put(lista[i])
+    res:int = len(lista)
+    return res
+
+def buscar_el_maximo(c:Cola[int])->int:
+    lista=[]
+    while c.empty()==False:
+        lista.append(c.get())
+    for i in range(len(lista)):
+        c.put(lista[i])
+    res:int = maximo(lista)
+    return res
+
+def armar_secuencia_de_bingo()->Cola[int]:
+    c=Cola()
+    lista=[]
+    i=0
+    while (len(lista))<100:
+        elemento=random.randint(0,99)
+        if pertenece(elemento,lista)==False:
+            lista.append(elemento)
+            c.put(elemento)
+    return c
+#print(armar_secuencia_de_bingo())
+def copia_cola(c:Cola[int])->Cola[int]:
+    copia=Cola()
+    lista=[]
+    while c.empty()==False:
+        lista.append(c.get())    
+    for i in range(len(lista)):
+        copia.put(lista[i])
+        c.put(lista[i])
+    return copia
+
+def elementos_cola(c:Cola[int])->Cola[int]:
+    lista=[]
+    while c.empty()==False:
+        lista.append(c.get)
+    for i in range(len(lista)):
+        c.put(lista[i])
+    return lista
+#print(elementos_cola(armar_secuencia_de_bingo())) #peligro tarda demasiado en ejecutarse.
+def jugar_carton_de_bingo(carton:list[int],bolillero:Cola[int])->int:
+    contador=0
+    jugadas=0
+    copia_bolillero=copia_cola(bolillero)
+    while contador<12:
+        numero=copia_bolillero.get()
+        if pertenece(numero,carton):
+            contador+=1
+            jugadas+=1
+        else:
+            jugadas+=1
+    return jugadas
+#print(jugar_carton_de_bingo([2,5,4,6,1,7,90,54,36,17,53,30],armar_secuencia_de_bingo()))
+
+#parte de diccionarios
+def longitud (s:str):
+    return len(s)
+
+def agrupar_por_longitud(nombre_archivo:str)->dict:
+    res:dict={}
+    archivo=open(nombre_archivo,"r")
+    lineas=archivo.readlines()
+    archivo.close
+    todas_las_palabras=[]
+    for i in range(len(lineas)):
+        todas_las_palabras.append(palabras(lineas[i]))
+    for k in range(len(todas_las_palabras)):
+        for j in range (len(todas_las_palabras[k])):
+            if pertenece(len(todas_las_palabras[k][j]),list(res.keys()))==False:
+                res[len(todas_las_palabras[k][j])]=1
+            else:
+                res[len(todas_las_palabras[k][j])]+=1
+    return res
+#print(agrupar_por_longitud("prueba.txt"))
+
+# def minimo(lista):        Esta función está piola para hallar el mínimo de una lista, se puede implementar en varios contextos.
+#     menor=lista[0]
+#     for i in range(len(lista)):
+#         if menor>=lista[i]:
+#             menor=lista[i]
+#     return menor
+def cant_apariciones_palabra_en_lista(palabra,lista):
+    contador=0
+    for i in range(len(lista)):
+        if lista[i]==palabra:
+            contador+=1
+    return contador
+def la_palabra_mas_frecuente(nombre_archivo:str)->str: # se cómo resolver en lo que falla, pero en este momento se me complica hallar un método
+    res=""
+    diccionario_palabras={}
+    lista_palabras=[]
+    archivo=open(nombre_archivo,"r")
+    lineas=archivo.readlines()
+    archivo.close()
+    for i in range(len(lineas)):
+        lista_palabras.append(palabras(lineas[i])) #mi idea hasta acá es crear una lista de listas de todas las palabras en cada línea
+    for k in range(len(lista_palabras)):
+        for j in range(len(lista_palabras[k])):
+            diccionario_palabras[lista_palabras[k][j]]=cant_apariciones_palabra_en_lista(lista_palabras[k][j],lista_palabras[k]) #mi idea hasta acá es crear un par clave-valor tal que clave es la palabra y valor es la cantidad de apariciones en la lista de palabras en el archivo
+    
+    valores=list(diccionario_palabras.values())
+    mas_repetido=0
+    for t in range(len(valores)):
+        if mas_repetido<=valores[t]:
+            mas_repetido=valores[t]
+
+    claves=list(diccionario_palabras.items())
+    for u in range(len(claves)):
+        if claves[u][1]==mas_repetido:
+            res+=claves[u][0]
+
+    return diccionario_palabras
