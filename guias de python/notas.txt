@@ -1,0 +1,4 @@
+853/24,algebra I,hoy,5
+855/24,algebra I,hoy,8
+855/24,ip,hoy,2
+853/24,ip,hoy,3.71
